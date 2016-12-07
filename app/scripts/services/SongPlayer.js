@@ -2,8 +2,16 @@
 
   function SongPlayer() {
 
+    /**
+    * @desc SongPlayer object we are going to use for play and pause methods
+    * @type {Object}
+    */
     var SongPlayer = {};
 
+    /**
+    * @desc Current song object being used
+    * @type {Object}
+    */
     var currentSong = null;
 
     /**
@@ -11,7 +19,6 @@
      * @type {Object}
     */
     var currentBuzzObject = null;
-
 
     /**
      * @function setSong
@@ -32,11 +39,25 @@
       currentSong = song;
     };
 
+    /**
+    * @function playSong
+    * @desc Sets sound to play through users speakers and sets song.playing to true
+    * @type {Object}
+    */
+    var playSong = function(song) {
+      currentBuzzObject.play();
+      song.playing = true;
+    };
+
+    /**
+    * @function songPlayer.play
+    * @desc This is the main function we call to play the song
+    * @type {Object}
+    */
     SongPlayer.play = function(song) {
       if (currentSong !== song) {
         setSong(song);
-        currentBuzzObject.play();
-        song.playing = true;
+        playSong(song);
       } else if (currentSong === song) {
         if (currentBuzzObject.isPaused()) {
           currentBuzzObject.play();
@@ -44,6 +65,11 @@
       }
     };
 
+    /**
+    * @function This is the main function we call to pause the song
+    * @desc
+    * @type {Object}
+    */
     SongPlayer.pause = function(song) {
       currentBuzzObject.pause();
       song.playing = false;
