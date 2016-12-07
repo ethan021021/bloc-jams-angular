@@ -60,7 +60,7 @@
     */
     var playSong = function(song) {
       currentBuzzObject.play();
-      song.playing = true;
+      SongPlayer.currentSong.playing = true;
     };
 
     /**
@@ -85,7 +85,7 @@
         playSong(song);
       } else if (SongPlayer.currentSong === song) {
         if (currentBuzzObject.isPaused()) {
-          currentBuzzObject.play();
+          playSong(song);
         }
       }
     };
@@ -99,7 +99,7 @@
       song = song || SongPlayer.currentSong;
       currentBuzzObject.pause();
       song.playing = false;
-    }
+    };
 
     /**
     * @function this function goes to the previous song
