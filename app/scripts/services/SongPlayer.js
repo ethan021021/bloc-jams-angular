@@ -1,6 +1,6 @@
 (function() {
 
-  function SongPlayer(Fixtures) {
+  function SongPlayer($rootScope, Fixtures) {
 
     /**
     * @desc SongPlayer object we are going to use for play and pause methods
@@ -35,6 +35,12 @@
         preload: true
       });
 
+      currentBuzzObject.bind('timeupdate', function() {
+        $rootScope.$apply(function() {
+          SongPlayer.currentTime = currentBuzzObject.getTime();
+        });
+      });
+
       SongPlayer.currentSong = song;
     };
 
@@ -54,6 +60,12 @@
     SongPlayer.currentSong = null;
 
     /**
+    * @desc Current playback time (in seconds) of currently playing song
+    * @type {Number}
+    */
+    SongPlayer.currentTime = null;
+
+    /**
     * @function playSong
     * @desc Sets sound to play through users speakers and sets song.playing to true
     * @type {Object}
@@ -71,6 +83,16 @@
     var stopSong = function(song) {
       currentBuzzObject.stop();
       song.playing = null;
+    };
+
+    /**
+    * @function Sets current time of audio
+    *
+    **/
+    SongPlayer.setCurrentTime = function(time) {
+      if (currentBuzzObject) {
+        currentBuzzObject.setTime(time);
+      }
     };
 
     /**
@@ -138,5 +160,5 @@
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
 })();
