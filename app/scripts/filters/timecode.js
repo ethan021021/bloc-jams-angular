@@ -1,30 +1,23 @@
 (function() {
-  function timecode() {
-    return function(seconds) {
-      var seconds = Number.parseFloat(seconds);
+  function timecode(SongPlayer) {
+    return function(seconds, type, song) {
 
-      if (Number.isNaN(seconds)) {
-        return '-:--';
+      var songPlayer = SongPlayer;
+
+      if (type == 'durationAlbum' && song) {
+        return buzz.toTimer(song.duration);
+      } else {
+        if (!songPlayer.currentSong) {
+          return '-:--';
+        }
+        var timer = buzz.toTimer(songPlayer.currentBuzzObject.getTime());
+
+        return timer;
       }
-
-      var wholeSeconds = Math.floor(seconds);
-      var minutes = Math.floor(wholeSeconds / 60);
-      var remainingSeconds = wholeSeconds % 60;
-
-      var output = minutes + ':';
-
-      if (remainingSeconds < 10) {
-        output += '0';
-      }
-
-      output += remainingSeconds;
-
-
-      return output;
     };
   }
 
   angular
     .module('blocJams')
-    .filter('timecode', timecode);
+    .filter('timecode', ['SongPlayer', timecode]);
 })();
